@@ -10,8 +10,6 @@ A basic Flask-based web application intended to manage household services with r
 
 ## 🗂️ Project Structure
 
-```
-
 ├── app.py                         # Main Flask application
 ├── instance/
 │   └── household\_services.db      # SQLite database file
@@ -29,8 +27,7 @@ A basic Flask-based web application intended to manage household services with r
 ├── login.html
 ├── professional\_dashboard.html
 └── register.html
-
-````
+```
 
 ---
 
