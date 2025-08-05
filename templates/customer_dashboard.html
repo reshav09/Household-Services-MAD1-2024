@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}Customer Dashboard{% endblock %}
+{% block content %}
+<h2>Available Professionals</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Service Type</th>
+            <th>Experience</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for professional in professionals %}
+        <tr>
+            <td>{{ professional.id }}</td>
+            <td>{{ professional.user.username }}</td>
+            <td>{{ professional.service_type }}</td>
+            <td>{{ professional.experience }}</td>
+            <td>
+                <form method="POST" action="{{ url_for('request_service') }}">
+                    <input type="hidden" name="professional_id" value="{{ professional.id }}">
+                    <button type="submit" class="btn btn-primary btn-sm">Request Service</button>
+                </form>                
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h3>Current Service Requests</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Service Name</th>
+            <th>Professional</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for service_id, status in request_status.items() %}
+        <tr>
+            <td>{{ services[service_id].name }}</td>
+            <td>{{ services[service_id].professional.user.username if services[service_id].professional else 'Admin' }}</td>
+            <td>{{ status }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Available Services</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Base Price</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for service in services %}
+        <tr>
+            <td>{{ service.id }}</td>
+            <td>{{ service.name }}</td>
+            <td>{{ service.base_price }}</td>
+            <td>{{ service.description }}</td>
+            <td>
+                {% if service.requested %}
+                <!-- Show Cancel Request Button if service is already requested -->
+                <form method="post" action="{{ url_for('delete_request', request_id=service.request_id) }}">
+                    <button type="submit" class="btn btn-danger btn-sm">Cancel Request</button>
+                </form>
+                {% else %}
+                <!-- Show Request Service Button -->
+                <form method="post" action="{{ url_for('request_service') }}">
+                    <input type="hidden" name="service_id" value="{{ service.id }}">
+                    <button type="submit" class="btn btn-primary btn-sm">Request Service</button>
+                </form>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% if not services %}
+<p>No services are currently available. Please check back later.</p>
+{% endif %}
+{% endblock %}
