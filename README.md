@@ -71,7 +71,6 @@ A basic Flask-based web application intended to manage household services with r
    ```bash
    git clone <repo-url>
    cd <project-dir>
-````
 
 2. **Set Up Virtual Environment**
 
